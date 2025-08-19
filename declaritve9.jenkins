@@ -1,0 +1,57 @@
+
+pipeline 
+{
+   agent any
+    stages
+    {
+        stage('continous download')
+        {
+            steps 
+            {
+                git branch: 'main', url: 'https://github.com/Surja07/Maven3.git'
+            }
+        }
+        
+        stage('continous build') 
+        {
+            steps 
+            {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage ('continous deployment') 
+              {
+            steps
+            {
+                sh 'scp /var/lib/jenkins/workspace/scriptedpip-9/Helloworld.java ubuntu@172.31.9.223:/home/ubuntu/demo4'
+            }
+        }
+
+             stage ('continous testing with java and compile') {
+            steps {
+       sh '''
+    javac /var/lib/jenkins/workspace/scriptedpip-9/Helloworld.java
+    java -cp /var/lib/jenkins/workspace/scriptedpip-9 Helloworld
+'''
+
+
+    }
+}
+
+          stage ('continous relase') 
+              {
+            steps
+            {
+                sh 'scp /var/lib/jenkins/workspace/scriptedpip-9/Helloworld.java ubuntu@172.31.12.169:/home/ubuntu/demo6'
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+}
